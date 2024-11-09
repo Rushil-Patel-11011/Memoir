@@ -6,6 +6,7 @@ import com.rushil.Memoir.repository.JournalEntryRepository;
 import org.bson.types.ObjectId;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
 import java.util.*;
@@ -19,6 +20,7 @@ public class JournalEntryService {
     @Autowired
     private UserService userService;
 
+    @Transactional
     public void saveEntry(JournalEntry journalEntry, String userName){
         try{
             User user = userService.findByUserName(userName);
@@ -28,7 +30,8 @@ public class JournalEntryService {
             userService.saveEntry(user);
         } catch(Exception e)
         {
-            System.out.println("Exception"+e);
+            System.out.println("Exception : "+e);
+            throw new RuntimeException("An error occur while saving the entry.", e);
         }
     }
 
