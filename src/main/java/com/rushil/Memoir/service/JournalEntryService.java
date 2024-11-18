@@ -28,7 +28,8 @@ public class JournalEntryService {
             JournalEntry saved = journalEntryRepository.save(journalEntry);
             user.getJournalEntries().add(saved);
             userService.saveEntry(user);
-        } catch(Exception e)
+        }
+        catch(Exception e)
         {
             System.out.println("Exception : "+e);
             throw new RuntimeException("An error occur while saving the entry.", e);
