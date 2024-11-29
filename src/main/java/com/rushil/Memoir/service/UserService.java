@@ -2,7 +2,10 @@ package com.rushil.Memoir.service;
 
 import com.rushil.Memoir.entity.User;
 import com.rushil.Memoir.repository.UserRepository;
+import lombok.extern.slf4j.Slf4j;
 import org.bson.types.ObjectId;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
@@ -14,9 +17,11 @@ import java.util.Optional;
 
 
 @Component
+@Slf4j
 public class UserService {
     @Autowired
     private UserRepository userRepository;
+//    private static final Logger logger = LoggerFactory.getLogger(UserService.class);
 
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
     public boolean saveNewUser(User user){
@@ -27,6 +32,7 @@ public class UserService {
             return true;
         }catch(Exception e)
         {
+            log.error("Error occurred for {}:",user.getUserName(),e);
             return false;
         }
     }
