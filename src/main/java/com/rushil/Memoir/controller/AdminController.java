@@ -1,5 +1,6 @@
 package com.rushil.Memoir.controller;
 
+import com.rushil.Memoir.cache.AppCache;
 import com.rushil.Memoir.entity.User;
 import com.rushil.Memoir.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,7 +15,8 @@ import java.util.*;
 public class AdminController {
     @Autowired
     private UserService userService;
-
+    @Autowired
+    private AppCache appCache;
     @GetMapping("/all-users")
     public ResponseEntity<?> getAllUser() {
         List<User> all = userService.getAll();
@@ -27,5 +29,11 @@ public class AdminController {
     public void createAdmin(@RequestBody User user)
     {
         userService.saveNewAdmin(user);
+    }
+
+    @GetMapping("/clear-app-cache")
+    public void clearAppCache()
+    {
+        appCache.init();
     }
 }

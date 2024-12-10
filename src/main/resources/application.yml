@@ -1,3 +1,5 @@
 spring:
   profiles:
     active: dev
+
+weather_api_key : db837e157f527477e6b001753af67a2a
