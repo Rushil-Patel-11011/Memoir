@@ -1,7 +1,7 @@
 spring:
   data:
     mongodb:
-      uri: mongodb+srv://rushilkakadiya332:3cGOTONung12zgk1@cluster0.kappm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
+      uri: mongodb+srv://${MONGODB_UNAME}:${MONGODB_PWRD}@cluster0.kappm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
       database: journaldb
       auto-index-creation: true
   main:
@@ -10,7 +10,7 @@ spring:
     host: smtp.gmail.com
     port: 587
     username: rushilpatel11011@gmail.com
-    password: qrtm zkwj hkqh oijk
+    password: ${MAIL_APP_PWRD}
     properties:
       mail:
         smtp:
@@ -18,4 +18,4 @@ spring:
           starttls:
             enable: true
 
-weather_api_key : db837e157f527477e6b001753af67a2a
+weather_api_key : ${WEATHER_API_KEY}
