@@ -1,8 +1,0 @@
-spring:
-  data:
-    mongodb:
-      uri: mongodb+srv://rushilkakadiya332:3cGOTONung12zgk1@cluster0.kappm.mongodb.net/?retryWrites=true&w=majority&appName=Cluster0
-      database: journaldb
-      auto-index-creation: true
-  main:
-    allow-circular-references: true
