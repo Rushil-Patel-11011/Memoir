@@ -18,4 +18,5 @@ spring:
           starttls:
             enable: true
 
+
 weather_api_key : ${WEATHER_API_KEY}
