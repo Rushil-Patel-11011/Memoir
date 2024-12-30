@@ -4,10 +4,12 @@ import com.rushil.Memoir.cache.AppCache;
 import com.rushil.Memoir.entity.JournalEntry;
 import com.rushil.Memoir.entity.User;
 import com.rushil.Memoir.enums.Sentiment;
+import com.rushil.Memoir.model.SentimentData;
 import com.rushil.Memoir.repository.UserRepositoryImpl;
 import com.rushil.Memoir.service.EmailService;
-import com.rushil.Memoir.service.SentimentAnalysisService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 
@@ -17,6 +19,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
+
 
 @Component
 public class UserScheduler {
@@ -29,6 +32,8 @@ public class UserScheduler {
 
     @Autowired
     private AppCache appCache;
+    @Autowired
+    private KafkaTemplate<String, SentimentData> kafkaTemplate;
 
 //    @Scheduled(cron = "0 0 9 * * SUN")
     public void fetchUsersAndSendSAMail(){
@@ -55,13 +60,14 @@ public class UserScheduler {
             }
             if(mostFrequentSentiment!=null)
             {
-                emailService.sendEmail(user.getEmail(),
-                        "Sentiment for last 7 days ",
-                        "the sentiment analysis based on your entries in Memoir app is here...\n dear "
-                                +user.getUserName()
-                                +",\n You were "
-                                +mostFrequentSentiment.toString()
-                                +" last week.\n TAKE CARE");
+                SentimentData sentimentData = SentimentData.builder().email(user.getEmail()).sentiment("Dear, "+user.getUserName()+"\nYour sentiment for last 7 days is... \n"+mostFrequentSentiment.toString()).build();
+                kafkaTemplate.send("weekly-sentiments", sentimentData.getEmail(), sentimentData);
+
+//                try{
+//                    kafkaTemplate.send("weekly-sentiments", sentimentData.getEmail(), sentimentData);
+//                }catch (Exception e){
+//                    emailService.sendEmail(sentimentData.getEmail(), "Sentiment for previous week", sentimentData.getSentiment());
+//                }
             }
         }
     }
